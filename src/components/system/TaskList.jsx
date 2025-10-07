@@ -6,7 +6,7 @@ import { useTaskStore } from "../../stores/task";
 
 const TaskList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { tasks, loading, fetchAllTasks } = useTaskStore();
+  const { tasks, loading, fetchAllTasks, deleteTask } = useTaskStore();
   const [taskData, setTaskData] = useState(null);
 
   useEffect(() => {
@@ -60,6 +60,7 @@ const TaskList = () => {
                       key={t.id}
                       title={t.title}
                       description={t.description}
+                      onDelete={() => deleteTask(t.id)}
                       update={() => isUpdate(t)}
                     />
                   );

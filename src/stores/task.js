@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { supabase } from "../utils/supabase";
 
-export const useTaskStore = create((set) => ({
+export const useTaskStore = create((set, get) => ({
   tasks: [],
   loading: true,
 
@@ -27,5 +27,13 @@ export const useTaskStore = create((set) => ({
       .update([formData])
       .eq("id", formData.id)
       .select();
+  },
+
+  //Delete Tasks
+  deleteTask: async (id) => {
+    const { error } = await supabase.from("tasks").delete().eq("id", id);
+    if (!error) {
+      await get().fetchAllTasks(); // Refresh list from database
+    }
   },
 }));
