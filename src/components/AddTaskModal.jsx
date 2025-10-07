@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { supabase, formActionDefault } from "../utils/supabase";
+import { formActionDefault } from "../utils/supabase";
 import { LoaderCircle } from "lucide-react";
 import { useAuthStore } from "../stores/auth";
+import { useTaskStore } from "../stores/task";
 
 const AddTaskModal = ({ isOpen, onClose, title }) => {
   const { userData } = useAuthStore();
+  const { addTasks, fetchAllTasks } = useTaskStore();
   const formDefault = {
-    user_id: null,
+    user_id: userData.id,
     title: "",
     description: "",
     status: "",
@@ -26,17 +28,7 @@ const AddTaskModal = ({ isOpen, onClose, title }) => {
     e.preventDefault();
     setFormAction({ ...formAction, formProcess: true });
 
-    const { data, error } = await supabase
-      .from("tasks")
-      .insert([
-        {
-          user_id: userData.id,
-          title: form.title,
-          description: form.description,
-          status: form.status,
-        },
-      ])
-      .select();
+    const { data, error } = await addTasks(form);
 
     if (error) {
       setFormAction({
@@ -50,7 +42,7 @@ const AddTaskModal = ({ isOpen, onClose, title }) => {
         formSuccessMessage: "Added Successfully",
         formProcess: false,
       });
-
+      await fetchAllTasks();
       setForm(formDefault);
       onClose();
     }
@@ -74,6 +66,12 @@ const AddTaskModal = ({ isOpen, onClose, title }) => {
         <div>
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 gap-3">
+              <div className="font-semibold text-center text-lg text-red-700">
+                {formAction.formErrorMessage}
+              </div>
+              <div className="font-semibold text-center text-lg text-green-700 ">
+                {formAction.formSuccessMessage}
+              </div>
               <input
                 type="text"
                 className="border-2 border-blue-800  font-semibold rounded-lg  w-full p-2  focus:ring-2 focus:ring-blue-400   focus:border-transparent outline-none transition"
