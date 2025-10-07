@@ -1,8 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import AddTaskModal from "../AddTaskModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import TaskCard from "./TaskCard";
+import { useTaskStore } from "../../stores/task";
 
 const TaskList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { tasks, loading, fetchAllTasks } = useTaskStore();
+
+  useEffect(() => {
+    fetchAllTasks();
+  }, []);
+
+  const columns = [
+    { title: "To-Do", status: "todo", color: "bg-green-500" },
+    { title: "In-progress", status: "in-progres", color: "bg-blue-500" },
+    { title: "Done", status: "done", color: "bg-gray-500" },
+  ];
 
   return (
     <>
@@ -15,15 +29,31 @@ const TaskList = () => {
         </button>
       </div>
       <div className="grid lg:grid-cols-3 md:grid-cols-3 gap-3">
-        <div className="bg-green-500 shadow-xl rounded w-full">
-          <h1 className="text-xl font-bold text-center">To-Do</h1>
-        </div>
-        <div className="bg-blue-500 shadow-xl rounded w-full">
-          <h1 className="text-xl font-bold text-center">In-progress</h1>
-        </div>
-        <div className="bg-gray-500 shadow-xl rounded w-full">
-          <h1 className="text-xl font-bold text-center">Done</h1>
-        </div>
+        {columns.map((col) => (
+          <div
+            key={col.status}
+            className={`${col.color} shadow-xl rounded w-full`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="text-xl font-bold text-center">{col.title}</h1>
+              <p className="text-lg font-bold">
+                {tasks.filter((t) => t.status === col.status).length}
+              </p>
+            </div>
+            {!loading &&
+              tasks
+                .filter((t) => t.status === col.status)
+                .map((t) => {
+                  return (
+                    <TaskCard
+                      key={t.id}
+                      title={t.title}
+                      description={t.description}
+                    />
+                  );
+                })}
+          </div>
+        ))}
       </div>
 
       <AddTaskModal

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import Layout from "../components/layout/LayoutWrapper";
-import Login from "../Pages/Login";
-import Register from "../Pages/Register";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
 import Dashboard from "../Pages/Dashboard";
 
 function AppRoutes() {
