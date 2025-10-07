@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { supabase } from "../utils/supabase";
 
-export const useTaskStore = create((set, get) => ({
+export const useTaskStore = create((set) => ({
   tasks: [],
   loading: true,
 
@@ -18,5 +18,14 @@ export const useTaskStore = create((set, get) => ({
   //Add Tasks
   addTasks: async (formData) => {
     return await supabase.from("tasks").insert([formData]).select();
+  },
+
+  //Update Tasks
+  updateTasks: async (formData) => {
+    return await supabase
+      .from("tasks")
+      .update([formData])
+      .eq("id", formData.id)
+      .select();
   },
 }));

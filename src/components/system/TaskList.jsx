@@ -7,10 +7,21 @@ import { useTaskStore } from "../../stores/task";
 const TaskList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { tasks, loading, fetchAllTasks } = useTaskStore();
+  const [taskData, setTaskData] = useState(null);
 
   useEffect(() => {
     fetchAllTasks();
   }, []);
+
+  const isUpdate = (task) => {
+    setIsModalOpen(true);
+    setTaskData(task);
+  };
+
+  const isAdd = () => {
+    setIsModalOpen(true);
+    setTaskData(null);
+  };
 
   const columns = [
     { title: "To-Do", status: "todo", color: "bg-green-500" },
@@ -22,7 +33,7 @@ const TaskList = () => {
     <>
       <div className="my-4 md:w-72  lg:w-72">
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={isAdd}
           className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer  font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-150 ease-in-out"
         >
           Add Task
@@ -49,6 +60,7 @@ const TaskList = () => {
                       key={t.id}
                       title={t.title}
                       description={t.description}
+                      update={() => isUpdate(t)}
                     />
                   );
                 })}
@@ -59,7 +71,8 @@ const TaskList = () => {
       <AddTaskModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Add Task"
+        title={taskData ? "Update Task" : "Add Task"}
+        taskData={taskData}
       />
     </>
   );

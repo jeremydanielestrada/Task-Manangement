@@ -1,20 +1,32 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from "react";
 import { formActionDefault } from "../utils/supabase";
 import { LoaderCircle } from "lucide-react";
 import { useAuthStore } from "../stores/auth";
 import { useTaskStore } from "../stores/task";
 
-const AddTaskModal = ({ isOpen, onClose, title }) => {
+const AddTaskModal = ({ isOpen, onClose, title, taskData }) => {
   const { userData } = useAuthStore();
-  const { addTasks, fetchAllTasks } = useTaskStore();
+  const { addTasks, fetchAllTasks, updateTasks } = useTaskStore();
   const formDefault = {
     user_id: userData.id,
     title: "",
     description: "",
     status: "",
   };
-  const [form, setForm] = useState(formDefault);
+  const [form, setForm] = useState(formActionDefault);
   const [formAction, setFormAction] = useState(formActionDefault);
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  useEffect(() => {
+    if (taskData && Object.keys(taskData).length > 0) {
+      setIsUpdate(true);
+      setForm(taskData);
+    } else {
+      setIsUpdate(false);
+      setForm(formDefault);
+    }
+  }, [taskData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +40,9 @@ const AddTaskModal = ({ isOpen, onClose, title }) => {
     e.preventDefault();
     setFormAction({ ...formAction, formProcess: true });
 
-    const { data, error } = await addTasks(form);
+    const { data, error } = isUpdate
+      ? await updateTasks(form)
+      : await addTasks(form);
 
     if (error) {
       setFormAction({
@@ -39,10 +53,15 @@ const AddTaskModal = ({ isOpen, onClose, title }) => {
     } else if (data) {
       setFormAction({
         ...formAction,
-        formSuccessMessage: "Added Successfully",
+        formSuccessMessage: isUpdate
+          ? "Updates Success Fully"
+          : "Added Success Fully",
         formProcess: false,
       });
+
       await fetchAllTasks();
+
+      setFormAction(formActionDefault);
       setForm(formDefault);
       onClose();
     }
@@ -106,7 +125,7 @@ const AddTaskModal = ({ isOpen, onClose, title }) => {
               {formAction.formProcess === true ? (
                 <LoaderCircle className="animate-spin" />
               ) : (
-                <span>Submit</span>
+                <span>{isUpdate ? "Update" : "Submit"}</span>
               )}
             </button>
           </form>
