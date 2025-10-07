@@ -31,7 +31,7 @@ export const useAuthStore = create((set) => ({
     const { data } = await supabase.auth.getSession();
 
     if (data.session) {
-      const { id, email, user_metadata } = data.session.user;
+      const { id, email, user_metadata } = data.session.user; //destructure only the needed values
       set({ userData: { id, email, ...user_metadata } });
     }
 

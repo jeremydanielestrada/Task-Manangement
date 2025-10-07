@@ -9,7 +9,7 @@ const AddTaskModal = ({ isOpen, onClose, title, taskData }) => {
   const { userData } = useAuthStore();
   const { addTasks, fetchAllTasks, updateTasks } = useTaskStore();
   const formDefault = {
-    user_id: userData.id,
+    user_id: userData?.id,
     title: "",
     description: "",
     status: "",
