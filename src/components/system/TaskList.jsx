@@ -18,7 +18,7 @@ import {
 import { useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
-// ✅ Droppable column component
+//  Droppable column component
 const DroppableColumn = ({ column, children }) => {
   const { setNodeRef } = useDroppable({ id: column.status });
 
@@ -32,8 +32,9 @@ const DroppableColumn = ({ column, children }) => {
   );
 };
 
-// ✅ Reusable draggable task card
-const DraggableTask = ({ task, onDelete, onUpdate }) => {
+// Reusable draggable task card
+// Replace the DraggableTask component with this:
+const DraggableTask = ({ task, onDelete, update }) => {
   const {
     attributes,
     listeners,
@@ -50,12 +51,13 @@ const DraggableTask = ({ task, onDelete, onUpdate }) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} {...attributes}>
       <TaskCard
         title={task.title}
         description={task.description}
-        onDelete={() => onDelete(task.id)}
-        update={() => onUpdate(task)}
+        onDelete={onDelete}
+        update={update}
+        dragHandle={listeners}
       />
     </div>
   );
@@ -91,7 +93,7 @@ const TaskList = () => {
 
   //  Helper: find which column a task currently belongs to
   const findContainer = (id) => {
-    // If the id itself is a column (e.g., "todo", "done"), return that directly
+    // If the id itself is a column
     if (columns.some((col) => col.status === id)) {
       return id;
     }
@@ -101,7 +103,7 @@ const TaskList = () => {
     return task ? task.status : null;
   };
 
-  // ✅ Handle drag end event
+  // Handle drag end event
   const handleDragEnd = async (event) => {
     const { active, over } = event;
     if (!over) return;
@@ -114,7 +116,7 @@ const TaskList = () => {
     // if task stays in same column, do nothing
     if (activeStatus === overStatus) return;
 
-    // ✅ update task status locally + backend
+    // update task status locally + backend
     await updateTasksByDragging(active.id, overStatus);
     await fetchAllTasks(); // refresh UI
   };
@@ -130,7 +132,7 @@ const TaskList = () => {
         </button>
       </div>
 
-      {/* ✅ DnD Context */}
+      {/* DnD Context */}
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
@@ -157,8 +159,8 @@ const TaskList = () => {
                       <DraggableTask
                         key={t.id}
                         task={t}
-                        onDelete={deleteTask}
-                        onUpdate={isUpdate}
+                        onDelete={() => deleteTask(t.id)}
+                        update={() => isUpdate(t)}
                       />
                     ))}
                 </SortableContext>
