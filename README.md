@@ -12,7 +12,7 @@ A modern **Kanban-style Task Management System** built using **React**, **Zustan
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" width="40" height="40" alt="JavaScript" />
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/zustand/zustand-original.svg" width="40" height="40" alt="Zustand" />
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/supabase/supabase-original.svg" width="40" height="40" alt="Supabase" />
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg" width="40" height="40" alt="TailwindCSS" />
+  <img src="[https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg](https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css)" width="40" height="40" alt="TailwindCSS" />
 </p>
 
 ---
@@ -59,28 +59,7 @@ A modern **Kanban-style Task Management System** built using **React**, **Zustan
 
 ---
 
-## 🛠️ Project Structure
-
-```
-src/
-│
-├── components/
-│   ├── AddTaskModal.jsx
-│   ├── TaskBoard/
-│   │   ├── TaskList.jsx
-│   │   └── TaskCard.jsx
-│
-├── stores/
-│   └── task.js   # Zustand store for task state
-│
-├── pages/
-│   ├── LoginForm.jsx
-│   ├── Dashboard.jsx
-│
-├── utils/
-│   └── supabase.js  # Supabase client & helper functions
-│
-└── App.jsx          # Routes setup using React Router
+ # Routes setup using React Router
 ```
 
 ---
