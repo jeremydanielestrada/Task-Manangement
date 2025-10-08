@@ -29,6 +29,18 @@ export const useTaskStore = create((set, get) => ({
       .select();
   },
 
+  //Update Tasks By Dragging
+  updateTasksByDragging: async (id, status) => {
+    if (status === null) {
+      return;
+    }
+    return await supabase
+      .from("tasks")
+      .update({ status: status })
+      .eq("id", id)
+      .select();
+  },
+
   //Delete Tasks
   deleteTask: async (id) => {
     const { error } = await supabase.from("tasks").delete().eq("id", id);
