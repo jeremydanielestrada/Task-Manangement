@@ -39,7 +39,7 @@ const LoginForm = () => {
       return false;
     } else if (data) {
       setFormAction({ ...formAction, formProcess: false });
-      setForm("");
+      setForm(formDataDefault);
       navigate("/dashboard");
     }
   };
@@ -50,6 +50,7 @@ const LoginForm = () => {
         className="border-2 border-blue-800  font-semibold rounded-lg  w-full p-2  focus:ring-2 focus:ring-blue-400   focus:border-transparent outline-none transition"
         placeholder="Enter Email"
         type="email"
+        value={form.email}
         onChange={handleChange}
       />
       <input
@@ -57,6 +58,7 @@ const LoginForm = () => {
         type="password"
         placeholder="Password"
         className="border-2 font-semibold  border-blue-800 my-5 rounded-lg w-full p-2  focus:ring-2 focus:ring-blue-400   focus:border-transparent outline-none transition"
+        value={form.password}
         onChange={handleChange}
       />
       <button

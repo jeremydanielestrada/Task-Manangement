@@ -62,7 +62,7 @@ const RegisterForm = () => {
         ...formAction,
         formSuccessMessage: "Register Successfully ",
       });
-      setFormData("");
+      setFormData(formDataDefault);
 
       navigate("/dashboard");
     }
@@ -123,7 +123,7 @@ const RegisterForm = () => {
       />
       <button
         type="submit"
-        className=" p-1 bg-blue-700 text-white text-1xl   rounded-lg font-medium cursor-pointer w-full hover:bg-blue-500"
+        className=" p-1 bg-blue-700 text-white text-1xl rounded-lg font-medium cursor-pointer w-full hover:bg-blue-500  flex justify-center align-center"
       >
         {" "}
         {formAction.formProcess === true ? (

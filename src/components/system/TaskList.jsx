@@ -33,7 +33,6 @@ const DroppableColumn = ({ column, children }) => {
 };
 
 // Reusable draggable task card
-// Replace the DraggableTask component with this:
 const DraggableTask = ({ task, onDelete, update }) => {
   const {
     attributes,
@@ -139,34 +138,35 @@ const TaskList = () => {
         onDragEnd={handleDragEnd}
       >
         <div className="grid lg:grid-cols-3 md:grid-cols-3 gap-3">
-          {columns.map((col) => {
-            const columnTasks = tasks.filter((t) => t.status === col.status);
-            return (
-              <DroppableColumn key={col.status} column={col}>
-                <div className="flex items-center justify-center gap-2">
-                  <h1 className="text-xl font-bold py-3 text-center">
-                    {col.title}
-                  </h1>
-                  <p className="text-lg font-bold">{columnTasks.length}</p>
-                </div>
+          {!loading &&
+            columns.map((col) => {
+              const columnTasks = tasks.filter((t) => t.status === col.status);
+              return (
+                <DroppableColumn key={col.status} column={col}>
+                  <div className="flex items-center justify-center gap-2">
+                    <h1 className="text-xl font-bold py-3 text-center">
+                      {col.title}
+                    </h1>
+                    <p className="text-lg font-bold">{columnTasks.length}</p>
+                  </div>
 
-                <SortableContext
-                  items={columnTasks.map((t) => t.id)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {!loading &&
-                    columnTasks.map((t) => (
-                      <DraggableTask
-                        key={t.id}
-                        task={t}
-                        onDelete={() => deleteTask(t.id)}
-                        update={() => isUpdate(t)}
-                      />
-                    ))}
-                </SortableContext>
-              </DroppableColumn>
-            );
-          })}
+                  <SortableContext
+                    items={columnTasks.map((t) => t.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {!loading &&
+                      columnTasks.map((t) => (
+                        <DraggableTask
+                          key={t.id}
+                          task={t}
+                          onDelete={() => deleteTask(t.id)}
+                          update={() => isUpdate(t)}
+                        />
+                      ))}
+                  </SortableContext>
+                </DroppableColumn>
+              );
+            })}
         </div>
       </DndContext>
 
