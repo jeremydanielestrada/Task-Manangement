@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router";
 import Layout from "../components/layout/LayoutWrapper";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import Dashboard from "../Pages/Dashboard";
+import Dashboard from "../pages/Dashboard";
 
 function AppRoutes() {
   return (
