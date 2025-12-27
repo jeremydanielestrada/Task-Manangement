@@ -60,28 +60,7 @@ A modern **Kanban-style Task Management System** built using **React**, **Zustan
 
 ---
 
-## 🛠️ Project Structure
-
-```
-src/
-│
-├── components/
-│   ├── AddTaskModal.jsx
-│   ├── TaskBoard/
-│   │   ├── TaskList.jsx
-│   │   └── TaskCard.jsx
-│
-├── stores/
-│   └── task.js   # Zustand store for task state
-│
-├── pages/
-│   ├── LoginForm.jsx
-│   ├── Dashboard.jsx
-│
-├── utils/
-│   └── supabase.js  # Supabase client & helper functions
-│
-└── App.jsx          # Routes setup using React Router
+ # Routes setup using React Router
 ```
 
 ---
